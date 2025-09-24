@@ -57,20 +57,20 @@ const Form = () => {
   }, [values.rt1, values.rt2, values.rt3]);
 
   return (
-    <main className="h-screen w-screen flex items-center justify-center">
-      <div className="relative lg:w-full w-[95%] max-w-2xl mx-auto">
-        <div className="w-2xl bg-white rounded-3xl pt-8 shadow-2xl relative z-10 pb-10 lg:pb-0">
+    <main className="min-h-screen w-full flex items-center justify-center py-6">
+      <div className="relative w-[95%] max-w-2xl mx-auto">
+        <div className="bg-white rounded-3xl pt-6 md:pt-8 shadow-2xl relative z-10 pb-8 md:pb-10">
           {/* Header */}
-          <h2 className="text-light-gray text-2xl font-normal mb-8 text-center">
+          <h2 className="text-light-gray text-2xl font-normal mb-6 sm:mb-8 text-center">
             New Reaction Time
           </h2>
 
           {/* Form Fields */}
-          <div className="space-y-2 mb-6 px-8">
+          <div className="space-y-3 mb-6 px-4 sm:px-6 md:px-8">
             <div>
               <input
                 placeholder="Name"
-                className="w-full border border-[#E5EBFF] text-lg font-normal bg-lighter-gray px-4 py-3 rounded-3xl outline-none text-gray-700 placeholder-light-gray"
+                className="w-full border border-border-gray text-lg font-normal bg-lighter-gray px-3 sm:px-4 py-3 rounded-3xl outline-none text-gray-700 placeholder-light-gray"
                 value={values.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
               />
@@ -83,7 +83,7 @@ const Form = () => {
               <input
                 placeholder="Age"
                 inputMode="numeric"
-                className="w-full border border-[#E5EBFF] text-lg font-normal bg-lighter-gray px-4 py-3 rounded-3xl outline-none text-gray-700 placeholder-light-gray"
+                className="w-full border border-border-gray text-lg font-normal bg-lighter-gray px-3 sm:px-4 py-3 rounded-3xl outline-none text-gray-700 placeholder-light-gray"
                 value={values.age}
                 onChange={(e) => handleInputChange("age", e.target.value)}
               />
@@ -96,7 +96,7 @@ const Form = () => {
               <input
                 placeholder="Email Address"
                 type="email"
-                className="w-full border border-[#E5EBFF] text-lg font-normal bg-lighter-gray px-4 py-3 rounded-3xl outline-none text-gray-700 placeholder-light-gray"
+                className="w-full border border-border-gray text-lg font-normal bg-lighter-gray px-3 sm:px-4 py-3 rounded-3xl outline-none text-gray-700 placeholder-light-gray"
                 value={values.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
               />
@@ -107,19 +107,19 @@ const Form = () => {
           </div>
 
           {/* Reaction Times Section */}
-          <div className="mb-6 px-8">
-            <label className="block text-light-gray text-xl font-normal mb-4 text-center">
+          <div className="mb-6 px-4 sm:px-6 md:px-8">
+            <label className="block text-light-gray text-lg sm:text-xl font-normal mb-3 sm:mb-4 text-center">
               Reaction Times
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div className="border border-[#E5EBFF] flex flex-col items-start bg-lighter-gray rounded-xl gap-1 p-3">
+              <div className="border border-border-gray flex flex-col items-start bg-lighter-gray rounded-xl gap-1 p-3">
                 <div className="text-base text-light-gray font-medium">
                   Wall
                 </div>
                 <input
                   placeholder="1453ms"
                   inputMode="numeric"
-                  className="w-full text-2xl/none font-normal outline-none text-gray-700 placeholder-light-gray"
+                  className="w-full text-2xl leading-none font-normal outline-none text-gray-700 placeholder-light-gray"
                   value={values.rt1}
                   onChange={(e) => handleInputChange("rt1", e.target.value)}
                 />
@@ -128,14 +128,14 @@ const Form = () => {
                 )}
               </div>
 
-              <div className="border border-[#E5EBFF] flex flex-col items-start bg-lighter-gray rounded-xl gap-1 p-3">
+              <div className="border border-border-gray flex flex-col items-start bg-lighter-gray rounded-xl gap-1 p-3">
                 <div className="text-base text-light-gray font-medium">
                   Wall
                 </div>
                 <input
                   placeholder="1453ms"
                   inputMode="numeric"
-                  className="w-full text-2xl/none font-normal outline-none text-gray-700 placeholder-light-gray"
+                  className="w-full text-2xl leading-none font-normal outline-none text-gray-700 placeholder-light-gray"
                   value={values.rt2}
                   onChange={(e) => handleInputChange("rt2", e.target.value)}
                 />
@@ -144,14 +144,14 @@ const Form = () => {
                 )}
               </div>
 
-              <div className="border border-[#E5EBFF] flex flex-col items-start bg-lighter-gray rounded-xl gap-1 p-3">
+              <div className="border border-border-gray flex flex-col items-start bg-lighter-gray rounded-xl gap-1 p-3">
                 <div className="text-base text-light-gray font-medium">
                   Wall
                 </div>
                 <input
                   placeholder="1453ms"
                   inputMode="numeric"
-                  className="w-full text-2xl/none font-normal outline-none text-gray-700 placeholder-light-gray"
+                  className="w-full text-2xl leading-none font-normal outline-none text-gray-700 placeholder-light-gray"
                   value={values.rt3}
                   onChange={(e) => handleInputChange("rt3", e.target.value)}
                 />
@@ -163,11 +163,11 @@ const Form = () => {
           </div>
 
           {/* Average Display */}
-          <div className="lg:-mb-4 bg-secondary-pink rounded-4xl p-5 text-center border border-primary-pink/10 z-50 mx-8">
+          <div className="bg-secondary-pink rounded-4xl p-4 sm:p-5 text-center border border-primary-pink/10 z-50 mx-4 sm:mx-6 md:mx-8">
             <div className="text-lg text-primary-pink font-medium">
               Your Average
             </div>
-            <div className="text-3xl/none font-semibold text-primary-pink">
+            <div className="text-2xl sm:text-3xl leading-none font-semibold text-primary-pink">
               {average || 0}ms
             </div>
 
