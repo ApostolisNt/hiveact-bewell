@@ -17,14 +17,12 @@ const ThankYou = () => {
   }, [avg, navigate]);
 
   return (
-    <main className="min-h-screen w-full flex items-center justify-center py-6">
+    <main className="min-h-screen w-full flex items-center justify-center">
       <div className="relative w-[95%] max-w-xl mx-auto">
         <div className="bg-white rounded-3xl pt-8 shadow-2xl relative z-10">
           {/* Header */}
           <div className="flex flex-col items-center gap-1">
-            <h2 className="text-light-gray text-5xl font-normal">
-              Thank You!
-            </h2>
+            <h2 className="text-light-gray text-5xl font-normal">Thank You!</h2>
             <p className="text-light-gray text-lg font-normal text-center">
               Your Reaction Time <br /> was submitted.
             </p>
@@ -41,7 +39,7 @@ const ThankYou = () => {
 
               {/* Submit Button */}
               <button
-                className="w-full flex justify-center items-center gap-1 mt-4 bg-white text-primary-pink rounded-3xl px-5 py-3 font-semibold text-lg hover:shadow-md transition-all duration-200 cursor-pointer"
+                className="w-full flex justify-center items-center gap-1 mt-4 bg-white text-primary-pink rounded-3xl px-5 py-3 font-semibold text-lg cursor-pointer"
                 type="button"
               >
                 Submitted
