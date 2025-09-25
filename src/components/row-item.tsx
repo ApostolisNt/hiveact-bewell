@@ -1,8 +1,8 @@
 import { memo } from "react";
-import { splitName, cx, fmtMs, fmtDelta } from "../utils/general";
+import { splitName, cx, fmtMs } from "../utils/general";
+import type { LeaderboardItem } from "../api/general";
 
-export type Row = { name: string; ms: number; deltaPct: number };
-type RowItemProps = { row: Row; index: number };
+type RowItemProps = { row: LeaderboardItem; index: number };
 
 const RowItem = memo(({ row, index }: RowItemProps) => {
   const isTopThree = index < 3;
@@ -20,7 +20,7 @@ const RowItem = memo(({ row, index }: RowItemProps) => {
       <div className="flex items-center justify-center">
         <span
           className={cx(
-            "text-xl md:text-2xl font-bold",
+            "text-base lg:text-xl font-bold",
             isTopThree ? "text-primary-pink" : "text-black"
           )}
         >
@@ -52,7 +52,7 @@ const RowItem = memo(({ row, index }: RowItemProps) => {
       {/* Reaction Time */}
       <div className="flex flex-col items-end md:items-start">
         <span className={cx(emphasis, "text-base md:text-xl")}>
-          {fmtMs(row.ms)}
+          {fmtMs(row.playerReactionTime)}
         </span>
         {/* Delta (mobile) */}
         <span
@@ -61,15 +61,13 @@ const RowItem = memo(({ row, index }: RowItemProps) => {
             isTopThree ? "text-primary-pink font-bold" : "text-black font-bold"
           )}
         >
-          {fmtDelta(row.deltaPct)}
+          {row.deltaPct}
         </span>
       </div>
 
       {/* Delta (desktop) */}
       <div className="hidden md:flex items-center">
-        <span className={cx(emphasis, "text-xl")}>
-          {fmtDelta(row.deltaPct)}
-        </span>
+        <span className={cx(emphasis, "text-xl")}>{row.deltaPct}</span>
       </div>
     </div>
   );

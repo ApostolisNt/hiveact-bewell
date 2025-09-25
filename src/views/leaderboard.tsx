@@ -1,61 +1,47 @@
 import React, { useEffect, useMemo, useState } from "react";
-import RowItem, { type Row } from "../components/row-item";
+import RowItem from "../components/row-item";
 import TableHeader from "../components/table-header";
 import Pagination from "../components/pagination";
+import {
+  type LeaderboardItem,
+  type LeaderboardResponse,
+  getLeaderboard,
+} from "../api/general";
 
 const PAGE_SIZE = 10;
 
-// Simulate server-side fetch
-async function fetchPage(
-  page: number,
-  pageSize: number
-): Promise<{ items: Row[]; totalPages: number }> {
-  // TODO: Replace with API call
-  const all: Row[] = [
-    { name: "Maximos Parisis", ms: 43, deltaPct: 3 },
-    { name: "Marios Angelakis", ms: 54, deltaPct: 3 },
-    { name: "Vasilis Georgopoulos", ms: 130, deltaPct: 3 },
-    { name: "Panagiotis Dimas", ms: 3400, deltaPct: 1 },
-    { name: "Giorgos Vlassopoulos", ms: 454, deltaPct: 1 },
-    { name: "Olympia Papadopoulou", ms: 454, deltaPct: -2 },
-    { name: "Konstantinos Georgiou", ms: 454, deltaPct: -2 },
-    { name: "Giorgos Konstantinidis", ms: 454345, deltaPct: -2 },
-    { name: "God", ms: 454553, deltaPct: -4 },
-    { name: "Steve Jobs", ms: 4543225, deltaPct: -4 },
-  ];
-
-  const totalPages = Math.max(1, Math.ceil(all.length / pageSize));
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize;
-
-  await new Promise((r) => setTimeout(r, 150));
-
-  return { items: all.slice(start, end), totalPages };
-}
-
 const LeaderboardPaged: React.FC = () => {
   const [page, setPage] = useState(1);
-  const [rows, setRows] = useState<Row[]>([]);
+  const [rows, setRows] = useState<LeaderboardItem[]>([]);
+  const [overallAverage, setOverallAverage] = useState<number>(0);
+  const [totalPlayers, setTotalPlayers] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
-    fetchPage(page, PAGE_SIZE)
-      .then(({ items, totalPages }) => {
-        if (!cancelled) {
-          setRows(items);
-          setTotalPages(totalPages);
-        }
-      })
-      .finally(() => !cancelled && setLoading(false));
+    (async () => {
+      try {
+        setLoading(true);
+        const data: LeaderboardResponse = await getLeaderboard(page, PAGE_SIZE);
+        if (cancelled) return;
+
+        setRows(data.items);
+        setOverallAverage(data.overallAverage);
+        setTotalPages(data.totalPages);
+        setTotalPlayers(data.count);
+      } catch (e: unknown) {
+        if (!cancelled)
+          console.log((e as Error)?.message || e?.toString() || "Error");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
     return () => {
       cancelled = true;
     };
   }, [page]);
 
-  // Keep global rank numbers
   const startIndex = useMemo(() => (page - 1) * PAGE_SIZE, [page]);
 
   return (
@@ -70,13 +56,19 @@ const LeaderboardPaged: React.FC = () => {
 
         {/* Board */}
         <div className="bg-white rounded-3xl p-4 md:p-6 shadow-2xl">
-          <TableHeader />
+          <TableHeader overallAverage={overallAverage} />
 
           {loading && rows.length === 0 ? (
             <div className="py-10 text-center text-light-gray">Loading…</div>
+          ) : rows.length === 0 ? (
+            <div className="py-10 text-center text-light-gray">No results.</div>
           ) : (
             rows.map((row, i) => (
-              <RowItem key={row.name} row={row} index={startIndex + i} />
+              <RowItem
+                key={`${row.name}-${startIndex + i}`}
+                row={row}
+                index={startIndex + i}
+              />
             ))
           )}
 
@@ -84,6 +76,7 @@ const LeaderboardPaged: React.FC = () => {
           <div className="mt-4 md:mt-6">
             <Pagination
               totalPages={totalPages}
+              totalPlayers={totalPlayers}
               currentPage={page}
               onChange={setPage}
               disabled={loading}

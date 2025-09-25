@@ -6,8 +6,8 @@ import { Eye, EyeOff, LogIn } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [usernameField, setUsernameField] = useState("");
+  const [passwordField, setPasswordField] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,15 +20,15 @@ const Login = () => {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    const res = await loginRequest({ username, password });
+    const res = await loginRequest({ usernameField, passwordField });
     setLoading(false);
     if (res.ok && res.data?.message === "Successful login.") {
-      const { clientId, expireAt, jwt, message } = res.data;
-      if (!clientId || !jwt || !expireAt) {
+      const { username, expireAt, jwt, message } = res.data;
+      if (!username || !jwt || !expireAt) {
         setError("Invalid login response");
         return;
       }
-      setSession({ username, clientId, expireAt, jwt, message });
+      setSession({ username, expireAt, jwt, message });
       navigate("/", { replace: true });
     } else {
       setError(res.data?.message || "Login failed");
@@ -50,8 +50,8 @@ const Login = () => {
               </label>
               <input
                 className="w-full border border-border-gray placeholder:text-light-gray text-black bg-lighter-gray rounded-2xl px-4 py-3 outline-none"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={usernameField}
+                onChange={(e) => setUsernameField(e.target.value)}
                 autoComplete="username"
                 placeholder="Enter username"
               />
@@ -63,8 +63,8 @@ const Login = () => {
               <div className="relative">
                 <input
                   className="w-full border border-border-gray bg-lighter-gray placeholder:text-light-gray text-black rounded-2xl px-4 py-3 pr-12 outline-none"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={passwordField}
+                  onChange={(e) => setPasswordField(e.target.value)}
                   type={showPwd ? "text" : "password"}
                   autoComplete="current-password"
                   placeholder="Enter password"
@@ -89,7 +89,7 @@ const Login = () => {
 
             <button
               type="submit"
-              disabled={loading || !username || !password}
+              disabled={loading || !usernameField || !passwordField}
               className="w-full flex items-center justify-center gap-2 bg-primary-pink text-white rounded-2xl px-5 py-3 font-semibold disabled:opacity-60 cursor-pointer"
             >
               <LogIn className="size-5" />

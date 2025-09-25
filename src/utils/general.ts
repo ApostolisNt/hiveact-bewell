@@ -6,5 +6,4 @@ export const splitName = (full: string) => {
   return { first, rest: rest.join(" ") };
 };
 
-export const fmtDelta = (n: number) => `${n > 0 ? "+" : ""}${n}%`;
 export const fmtMs = (n: number) => `${n}ms`;

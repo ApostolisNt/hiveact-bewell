@@ -2,7 +2,6 @@ export const AUTH_KEY = "hbw_auth";
 
 export type AuthSession = {
   username: string;
-  clientId: string;
   jwt: string;
   expireAt: number;
   message: string;

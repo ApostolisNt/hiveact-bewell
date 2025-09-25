@@ -1,4 +1,8 @@
-const TableHeader = () => (
+type TableHeaderProps = {
+  overallAverage: number;
+};
+
+const TableHeader = ({ overallAverage }: TableHeaderProps) => (
   <>
     {/* Mobile header (3 columns) */}
     <div className="grid md:hidden grid-cols-[48px_1fr_auto] gap-3 items-baseline lg:items-center mb-2 pb-2 px-3">
@@ -11,7 +15,8 @@ const TableHeader = () => (
           Reaction Time
         </div>
         <div className="text-light-gray text-xs uppercase tracking-wider">
-          AVG: 253<span className="lowercase">ms</span>
+          AVG: {overallAverage}
+          <span className="lowercase">ms</span>
         </div>
       </div>
     </div>
@@ -26,7 +31,8 @@ const TableHeader = () => (
         REACTION TIME
       </div>
       <div className="text-light-gray font-semibold text-lg uppercase tracking-wider">
-        AVG: 253<span className="lowercase">ms</span>
+        AVG: {overallAverage}
+        <span className="lowercase">ms</span>
       </div>
     </div>
   </>

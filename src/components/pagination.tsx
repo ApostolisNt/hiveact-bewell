@@ -4,19 +4,19 @@ import { cx } from "../utils/general";
 
 type PaginationProps = {
   totalPages: number;
+  totalPlayers: number;
   currentPage: number;
   onChange: (page: number) => void;
-  className?: string;
   disabled?: boolean;
 };
 
-const Pagination: React.FC<PaginationProps> = ({
+const Pagination = ({
   totalPages,
+  totalPlayers,
   currentPage,
   onChange,
-  className,
   disabled,
-}) => {
+}: PaginationProps) => {
   //   if (totalPages <= 1) return null;
 
   const first = [1, 2, 3].filter((p) => p <= totalPages);
@@ -60,7 +60,7 @@ const Pagination: React.FC<PaginationProps> = ({
         active
           ? "border-primary-pink text-primary-pink font-bold bg-secondary-pink"
           : "border-transparent text-black hover:bg-secondary-pink/60",
-        (isDisabled || disabled) && "opacity-50 cursor-not-allowed"
+        (isDisabled || disabled) && "opacity-50"
       )}
       aria-current={active ? "page" : undefined}
     >
@@ -74,44 +74,46 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <nav
-      className={cx(
-        "w-full flex items-center justify-center gap-1 md:gap-2 select-none",
-        className
-      )}
+      className="w-full flex flex-col items-center gap-2"
       aria-label="pagination"
     >
-      <Btn
-        label={<ChevronLeft className="w-4 h-4" />}
-        page={currentPage - 1}
-        isDisabled={currentPage === 1}
-      />
+      <div className="flex items-center justify-center gap-1 md:gap-2 select-none">
+        <Btn
+          label={<ChevronLeft className="w-4 h-4" />}
+          page={currentPage - 1}
+          isDisabled={currentPage === 1}
+        />
 
-      {/* First 3 */}
-      {first.map((p) => (
-        <Btn key={`f-${p}`} label={p} page={p} active={p === currentPage} />
-      ))}
+        {/* First 3 */}
+        {first.map((p) => (
+          <Btn key={`f-${p}`} label={p} page={p} active={p === currentPage} />
+        ))}
 
-      {/* Left dots (show whenever is gap to middle/last) */}
-      {hasLeftGap && <Dot />}
+        {/* Left dots (show whenever is gap to middle/last) */}
+        {hasLeftGap && <Dot />}
 
-      {/* Middle (only current page) */}
-      {middle.map((p) => (
-        <Btn key={`m-${p}`} label={p} page={p} active={p === currentPage} />
-      ))}
+        {/* Middle (only current page) */}
+        {middle.map((p) => (
+          <Btn key={`m-${p}`} label={p} page={p} active={p === currentPage} />
+        ))}
 
-      {/* Right dots (gap between middle and last) */}
-      {hasRightGap && <Dot />}
+        {/* Right dots (gap between middle and last) */}
+        {hasRightGap && <Dot />}
 
-      {/* Last 2 */}
-      {last.map((p) => (
-        <Btn key={`l-${p}`} label={p} page={p} active={p === currentPage} />
-      ))}
+        {/* Last 2 */}
+        {last.map((p) => (
+          <Btn key={`l-${p}`} label={p} page={p} active={p === currentPage} />
+        ))}
 
-      <Btn
-        label={<ChevronRight className="w-4 h-4" />}
-        page={currentPage + 1}
-        isDisabled={currentPage === totalPages}
-      />
+        <Btn
+          label={<ChevronRight className="w-4 h-4" />}
+          page={currentPage + 1}
+          isDisabled={currentPage === totalPages}
+        />
+      </div>
+      <span className="ml-4 text-sm text-light-gray select-none hidden md:inline">
+        {totalPlayers} {totalPlayers === 1 ? "player" : "players"}
+      </span>
     </nav>
   );
 };

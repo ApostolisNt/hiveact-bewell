@@ -3,7 +3,7 @@ import hiveact from "../assets/hiveact.png";
 import { useNavigate } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { schema, type FormValues } from "../schema/general";
-import { mockPostReaction } from "../api/general";
+import { submitForm } from "../api/general";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const Form = () => {
@@ -37,7 +37,7 @@ const Form = () => {
 
   const onValid: SubmitHandler<FormValues> = async (values) => {
     try {
-      const res = await mockPostReaction({ values, average });
+      const res = await submitForm({ values, average });
       if (res.ok) {
         navigate("/thank-you", { state: { avg: average, values } });
       } else {
