@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useContext } from "react";
 import RowItem from "../components/row-item";
 import TableHeader from "../components/table-header";
 import Pagination from "../components/pagination";
@@ -7,6 +7,7 @@ import {
   type LeaderboardResponse,
   getLeaderboard,
 } from "../api/general";
+import LeaderboardRefreshContext from "../context/leaderboardRefreshContext";
 
 const PAGE_SIZE = 10;
 
@@ -18,12 +19,20 @@ const LeaderboardPaged: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  const refreshVersion = useContext(LeaderboardRefreshContext)?.version ?? 0;
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         setLoading(true);
-        const data: LeaderboardResponse = await getLeaderboard(page, PAGE_SIZE);
+        const data: LeaderboardResponse = await getLeaderboard(
+          page,
+          PAGE_SIZE,
+          {
+            cache: "no-store",
+          }
+        );
         if (cancelled) return;
 
         setRows(data.items);
@@ -40,7 +49,7 @@ const LeaderboardPaged: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, [page]);
+  }, [page, refreshVersion]);
 
   const startIndex = useMemo(() => (page - 1) * PAGE_SIZE, [page]);
 

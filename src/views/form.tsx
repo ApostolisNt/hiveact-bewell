@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { schema, type FormValues } from "../schema/general";
 import { submitForm } from "../api/general";
+import { useContext } from "react";
+import LeaderboardRefreshContext from "../context/leaderboardRefreshContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const Form = () => {
   const navigate = useNavigate();
+  const refreshCtx = useContext(LeaderboardRefreshContext);
 
   const {
     register,
@@ -39,6 +42,8 @@ const Form = () => {
     try {
       const res = await submitForm({ values, average });
       if (res.ok) {
+        // Notify leaderboard via context to refetch
+        refreshCtx?.refresh?.();
         navigate("/thank-you", { state: { avg: average, values } });
       } else {
         alert("Something went wrong. Please try again.");

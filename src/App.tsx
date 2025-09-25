@@ -10,6 +10,7 @@ import ThankYou from "./views/thank-you";
 import Leaderboard from "./views/leaderboard";
 import Login from "./views/login";
 import { isAuthenticated } from "./utils/auth";
+import { LeaderboardRefreshProvider } from "./context/refresh";
 
 function ProtectedRoute() {
   if (!isAuthenticated()) {
@@ -32,8 +33,9 @@ function PublicLayout() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <LeaderboardRefreshProvider>
+      <BrowserRouter>
+        <Routes>
         {/* Public */}
         <Route element={<PublicLayout />}>
           <Route path="/login" element={<Login />} />
@@ -48,8 +50,9 @@ function App() {
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/leaderboard" replace />} />
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </LeaderboardRefreshProvider>
   );
 }
 
